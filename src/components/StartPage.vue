@@ -38,18 +38,18 @@
                                 <v-container>
                                     <v-row>
                                         <v-col cols="12">
-                                            <v-text-field label="Логин" required></v-text-field>
+                                            <v-text-field label="Логин" v-model="email" required></v-text-field>
                                         </v-col>
                                         <v-col cols="12">
-                                            <v-text-field label="Пароль" type="password" required></v-text-field>
+                                            <v-text-field label="Пароль" v-model="password" type="password" required></v-text-field>
                                         </v-col>
                                     </v-row>
                                 </v-container>
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" text @click="dialogLogin = false">Отмена</v-btn>
-                                <v-btn color="blue darken-1" text @click="dialogLogin = false">Войти</v-btn>
+                                <v-btn color="blue darken-1" text @click="cleanRegister">Отмена</v-btn>
+                                <v-btn color="blue darken-1" text @click="submitLogin">Войти</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
@@ -87,10 +87,11 @@
                                     </v-row>
                                     <v-row>
                                         <v-col cols="12">
-                                            <v-text-field label="Логин*" required></v-text-field>
+                                            <v-text-field label="Логин*" v-model="email" required></v-text-field>
                                         </v-col>
                                         <v-col cols="12">
-                                            <v-text-field label="Пароль*" type="password" required></v-text-field>
+                                            <v-text-field label="Пароль*" v-model="password" type="password"
+                                                          required></v-text-field>
                                         </v-col>
                                         <v-col cols="12">
                                             <v-text-field label="Повторите пароль*" type="password"
@@ -147,8 +148,8 @@
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" text @click="dialogRegister = false">Отмена</v-btn>
-                                <v-btn color="blue darken-1" text @click="dialogRegister = false">Отправить</v-btn>
+                                <v-btn color="blue darken-1" text @click="cleanRegister()">Отмена</v-btn>
+                                <v-btn color="blue darken-1" text @click="submitRegister()">Отправить</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
@@ -159,6 +160,8 @@
 </template>
 
 <script>
+    import firebase from 'firebase';
+
     export default {
         name: 'StartPage',
 
@@ -166,6 +169,8 @@
             isLoading: false,
             dialogLogin: false,
             dialogRegister: false,
+            email: '',
+            password: '',
             ecosystem: [
                 {
                     text: 'vuetify-loader',
@@ -224,6 +229,38 @@
                     this.isLoading = false
                     this.companyName = "ООО Ева Логистикс Интернешнл Лимитед";
                 }, 1500)
+            },
+            submitRegister() {
+                this.dialogRegister = false;
+                firebase.auth()
+                    .createUserWithEmailAndPassword(this.email, this.password)
+                    .then(
+                        function (user) {
+                            alert("Success" + user.toString())
+                        },
+                        function (err) {
+                            alert("Error" + err.message)
+                        }
+                    );
+                this.cleanRegister();
+            },
+            cleanRegister() {
+                this.dialogRegister = false;
+                this.email = '';
+                this.password = '';
+            },
+            submitLogin() {
+                this.dialogLogin = false;
+                firebase.auth()
+                .signInWithEmailAndPassword(this.email, this.password)
+                .then(
+                    function (user) {
+                        alert("Success" + user.toString())
+                    },
+                    function (err) {
+                        alert("Error" + err.message)
+                    }
+                )
             }
         }
     }
