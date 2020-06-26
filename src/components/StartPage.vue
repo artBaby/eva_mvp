@@ -16,7 +16,7 @@
             </v-col>
 
 
-            <v-col class="mb-5" cols="12" >
+            <v-col class="mb-5" cols="12">
                 <v-row justify="center">
 
                     <!-- Вход -->
@@ -41,15 +41,15 @@
                                             <v-text-field label="Логин" required></v-text-field>
                                         </v-col>
                                         <v-col cols="12">
-                                            <v-text-field label="Password" type="password" required></v-text-field>
+                                            <v-text-field label="Пароль" type="password" required></v-text-field>
                                         </v-col>
                                     </v-row>
                                 </v-container>
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" text @click="dialogLogin = false">Close</v-btn>
-                                <v-btn color="blue darken-1" text @click="dialogLogin = false">Save</v-btn>
+                                <v-btn color="blue darken-1" text @click="dialogLogin = false">Отмена</v-btn>
+                                <v-btn color="blue darken-1" text @click="dialogLogin = false">Войти</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
@@ -70,7 +70,7 @@
                                 <span class="headline">Новый пользователь</span>
                             </v-card-title>
                             <v-card-text>
-                                <v-container>
+                                <v-container class="inputs-container">
                                     <v-row>
                                         <v-col>
                                             <v-btn class="ma-1">
@@ -87,6 +87,18 @@
                                     </v-row>
                                     <v-row>
                                         <v-col cols="12">
+                                            <v-text-field label="Логин*" required></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <v-text-field label="Пароль*" type="password" required></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <v-text-field label="Повторите пароль*" type="password"
+                                                          required></v-text-field>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col cols="12">
                                             <v-text-field label="Страна*" required></v-text-field>
                                         </v-col>
                                     </v-row>
@@ -94,7 +106,6 @@
                                         <v-col cols="12">
                                             <v-text-field
                                                     label="ИНН*"
-                                                    hint="455 223 996 255"
                                                     persistent-hint
                                                     required
                                                     v-on:blur="fillCompanyName()"
@@ -211,9 +222,28 @@
                 this.isLoading = true;
                 setTimeout(() => {
                     this.isLoading = false
-                    this.companyName = "ООО Ева Хуева Логистикс Интернешнл Лимитед";
+                    this.companyName = "ООО Ева Логистикс Интернешнл Лимитед";
                 }, 1500)
             }
         }
     }
 </script>
+
+<style lang="stylus">
+    .inputs-container {
+
+        .col-12 {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .theme--light.v-input {
+            padding-top: 0;
+        }
+
+        .v-input__slot {
+            margin-bottom: 0;
+        }
+
+    }
+</style>
