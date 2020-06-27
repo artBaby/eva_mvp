@@ -241,25 +241,45 @@
             },
             regProcess() {
                 this.signUp();
-
-                firebase.auth().signOut();
-
-                this.signIn();
-
+                this.dialogRegister = false;
             },
             signUp() {
-                this.dialogRegister = false;
+                // this.dialogRegister = false;
                 firebase.auth()
                     .createUserWithEmailAndPassword(this.email, this.password)
                     .then(
                         (user) => {
-                            this.setRole(user.user.uid);
 
-                            // this.$router.replace('');
-                            // this.$router.push({name: '', params: {role: this.userRole}})
+                            const addMessage = firebase.functions().httpsCallable("setUserRole");
+
+                            var data = {uid: user.user.uid, role: this.userRole};
+                            console.log("ROLE: " + this.userRole);
+                            addMessage(data)
+                                .then((result) => {
+                                    console.log("cool");
+                                    firebase.auth().signOut()
+                                        .then(() => {
+                                            console.log(55, this.email, this.password)
+                                            firebase.auth()
+                                                .signInWithEmailAndPassword(this.email, this.password)
+                                                .then(
+                                                    (user) => {
+                                                        this.$router.replace('')
+                                                    },
+                                                    (err) => {
+                                                        alert("signInWithEmailAndPassword Error" + err.message)
+                                                    }
+                                                );
+                                        });
+                                })
+                                .catch(function (error) {
+                                    console.log("setUserRole ", error);
+                                    return false;
+                                });
+
                         },
                         (err) => {
-                            alert("Error" + err.message)
+                            alert("createUserWithEmailAndPassword Error" + err.message)
                         }
                     );
                 // this.cleanRegister();
@@ -299,9 +319,11 @@
                 addMessage(data)
                     .then(function (result) {
                         console.log(result);
+                        return true;
                     })
                     .catch(function (error) {
                         console.log(error)
+                        return false;
                     });
             }
         }
