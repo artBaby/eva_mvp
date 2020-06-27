@@ -28,8 +28,7 @@
       <v-spacer></v-spacer>
 
       <v-btn
-        router-link to="/start"
-        target="_self"
+        @click="logout"
         text>
         <span class="mr-2">Выход</span>
         <v-icon>mdi-open-in-new</v-icon>
@@ -37,9 +36,6 @@
 
     </v-app-bar>
 
-<!--    <v-content>-->
-<!--      <StartPage/>-->
-<!--    </v-content>-->
       <v-content>
           <router-view></router-view>
       </v-content>
@@ -47,17 +43,17 @@
 </template>
 
 <script>
-// import StartPage from './components/StartPage';
+import firebase from 'firebase'
 
 export default {
   name: 'App',
+    methods: {
+      logout: function () {
+          firebase.auth().signOut().then(() => {
+              this.$router.replace('login')
+          })
+      }
+    },
 
-  // components: {
-  //     StartPage,
-  // },
-
-  data: () => ({
-    //
-  }),
 };
 </script>

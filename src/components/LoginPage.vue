@@ -32,7 +32,7 @@
                         </template>
                         <v-card>
                             <v-card-title>
-                                <span class="headline">User Profile</span>
+                                <span class="headline">Вход в систему</span>
                             </v-card-title>
                             <v-card-text>
                                 <v-container>
@@ -41,15 +41,16 @@
                                             <v-text-field label="Логин" v-model="email" required></v-text-field>
                                         </v-col>
                                         <v-col cols="12">
-                                            <v-text-field label="Пароль" v-model="password" type="password" required></v-text-field>
+                                            <v-text-field label="Пароль" v-model="password" type="password"
+                                                          required></v-text-field>
                                         </v-col>
                                     </v-row>
                                 </v-container>
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" text @click="cleanRegister">Отмена</v-btn>
-                                <v-btn color="blue darken-1" text @click="submitLogin">Войти</v-btn>
+                                <v-btn color="blue darken-1" text @click="cleanSignIn">Отмена</v-btn>
+                                <v-btn color="blue darken-1" text @click="signIn">Войти</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
@@ -73,14 +74,16 @@
                                 <v-container class="inputs-container">
                                     <v-row>
                                         <v-col>
-                                            <v-btn class="ma-1">
+                                            <v-btn class="ma-1"
+                                                   @click="setUserRoleProperty('productCompany')">
                                                 Грузовладелец
                                             </v-btn>
                                         </v-col>
                                         <v-col>
                                             <v-btn class="ma-1"
                                                    v-bind="attrs"
-                                                   v-on="on">
+                                                   v-on="on"
+                                                   @click="setUserRoleProperty('trailerCompany')">
                                                 Грузоперевозчик
                                             </v-btn>
                                         </v-col>
@@ -149,7 +152,7 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue darken-1" text @click="cleanRegister()">Отмена</v-btn>
-                                <v-btn color="blue darken-1" text @click="submitRegister()">Отправить</v-btn>
+                                <v-btn color="blue darken-1" text @click="regProcess">Отправить</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
@@ -162,15 +165,21 @@
 <script>
     import firebase from 'firebase';
 
-    export default {
-        name: 'StartPage',
+    const admin = require('firebase-admin')
 
+
+    export default {
+        name: 'LoginPage',
         data: () => ({
+            on: '',
+            attrs: '',
             isLoading: false,
             dialogLogin: false,
             dialogRegister: false,
+            companyName: '',
             email: '',
             password: '',
+            userRole: '',
             ecosystem: [
                 {
                     text: 'vuetify-loader',
@@ -230,37 +239,70 @@
                     this.companyName = "ООО Ева Логистикс Интернешнл Лимитед";
                 }, 1500)
             },
-            submitRegister() {
+            regProcess() {
+                this.signUp();
+
+                firebase.auth().signOut();
+
+                this.signIn();
+
+            },
+            signUp() {
                 this.dialogRegister = false;
                 firebase.auth()
                     .createUserWithEmailAndPassword(this.email, this.password)
                     .then(
-                        function (user) {
-                            alert("Success" + user.toString())
+                        (user) => {
+                            this.setRole(user.user.uid);
+
+                            // this.$router.replace('');
+                            // this.$router.push({name: '', params: {role: this.userRole}})
                         },
-                        function (err) {
+                        (err) => {
                             alert("Error" + err.message)
                         }
                     );
-                this.cleanRegister();
+                // this.cleanRegister();
             },
             cleanRegister() {
                 this.dialogRegister = false;
                 this.email = '';
                 this.password = '';
             },
-            submitLogin() {
+            cleanSignIn() {
+                this.dialogLogin = false;
+                this.email = '';
+                this.password = '';
+            },
+            signIn() {
                 this.dialogLogin = false;
                 firebase.auth()
-                .signInWithEmailAndPassword(this.email, this.password)
-                .then(
-                    function (user) {
-                        alert("Success" + user.toString())
-                    },
-                    function (err) {
-                        alert("Error" + err.message)
-                    }
-                )
+                    .signInWithEmailAndPassword(this.email, this.password)
+                    .then(
+                        (user) => {
+                            this.$router.replace('')
+                        },
+                        (err) => {
+                            alert("Error" + err.message)
+                        }
+                    );
+            },
+            setUserRoleProperty(role) {
+                this.userRole = role
+            }
+            ,
+            setRole(uid) {
+                var addMessage = firebase.functions().httpsCallable("setUserRole");
+
+                var data = {uid: uid, role: this.userRole};
+                console.log("ROLE: " + this.userRole);
+                addMessage(data)
+                    .then(function (result) {
+                        console.log(result);
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    });
             }
         }
     }

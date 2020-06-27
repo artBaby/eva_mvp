@@ -9,7 +9,12 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
+    "dns": "^0.2.2",
     "firebase": "^7.15.5",
+    "firebase-admin": "^8.12.1",
+    "firebase-functions": "^3.7.0",
+    "firebase-tools": "^8.4.3",
+    "http2": "^3.3.7",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
     "vue": "^2.6.11",
@@ -41,7 +46,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "no-unused-vars": "off"
+    }
   },
   "browserslist": [
     "> 1%",
