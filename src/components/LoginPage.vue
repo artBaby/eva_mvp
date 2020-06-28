@@ -137,6 +137,20 @@
                                         </v-col>
                                     </v-row>
                                     <v-row>
+                                        <v-col cols="1">
+                                            <v-text-field
+                                            value="+7"
+                                            disabled></v-text-field>
+                                        </v-col>
+                                        <v-col cols="11">
+                                            <v-text-field
+                                                    label="Номер телефона (Формат: 1234567890)"
+                                                    v-model="phoneNumber"
+                                                    type="number">
+                                            </v-text-field>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
                                         <v-col>
                                             <v-checkbox label="Пользовательское соглашение"></v-checkbox>
                                         </v-col>
@@ -166,8 +180,6 @@
     import firebase from 'firebase';
 
     const admin = require('firebase-admin')
-
-
     export default {
         name: 'LoginPage',
         data: () => ({
@@ -176,6 +188,7 @@
             isLoading: false,
             dialogLogin: false,
             dialogRegister: false,
+            phoneNumber: null,
             companyName: '',
             email: '',
             password: '',
