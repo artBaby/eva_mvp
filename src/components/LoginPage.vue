@@ -139,8 +139,8 @@
                                     <v-row>
                                         <v-col cols="1">
                                             <v-text-field
-                                            value="+7"
-                                            disabled></v-text-field>
+                                                    value="+7"
+                                                    disabled></v-text-field>
                                         </v-col>
                                         <v-col cols="11">
                                             <v-text-field
@@ -170,6 +170,16 @@
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
+
+                    <div ref="divProgressCircle" class="progressBarCircle" v-show="divProgressCircle">
+                        <v-container>
+                            <v-progress-circular :size="50" indeterminate
+                                                 color="amber" justify="center"
+                                                 class="align-content-center">
+                            </v-progress-circular>
+                        </v-container>
+                    </div>
+
                 </v-row>
             </v-col>
         </v-row>
@@ -188,6 +198,7 @@
             isLoading: false,
             dialogLogin: false,
             dialogRegister: false,
+            divProgressCircle: false,
             phoneNumber: null,
             companyName: '',
             email: '',
@@ -252,9 +263,20 @@
                     this.companyName = "ООО Ева Логистикс Интернешнл Лимитед";
                 }, 1500)
             },
+            validated() {
+                if (this.userRole === '') {
+                    return false;
+                }
+                return true;
+            },
             regProcess() {
-                this.signUp();
-                this.dialogRegister = false;
+                if (this.validated()) {
+                    this.divProgressCircle = true;
+                    this.signUp();
+                    this.dialogRegister = false;
+                } else {
+                    alert("Выберите тип пользователя")
+                }
             },
             signUp() {
                 // this.dialogRegister = false;
@@ -277,6 +299,7 @@
                                                 .signInWithEmailAndPassword(this.email, this.password)
                                                 .then(
                                                     (user) => {
+                                                        this.divProgressCircle = false;
                                                         this.$router.replace('')
                                                     },
                                                     (err) => {
@@ -360,4 +383,22 @@
         }
 
     }
+
+    .progressBarCircle {
+        margin: 0;
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)
+        text-align: center;
+        background-color grey;
+        border-radius: 15px;
+    }
+
+    .divCirce {
+        text-align: center
+    }
+
+
 </style>
