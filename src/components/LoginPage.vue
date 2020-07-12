@@ -1,9 +1,8 @@
 <template>
     <v-container>
         <v-row class="text-center">
-            <v-col cols="12">
+            <v-col cols="12" style="margin-top: 50px">
                 <v-img :src="require('../assets/logo_car.png')"
-                       class="my-3"
                        contain
                        height="160"
                 />
