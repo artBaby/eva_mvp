@@ -171,14 +171,18 @@
                         </v-card>
                     </v-dialog>
 
-                    <div ref="divProgressCircle" class="progressBarCircle" v-show="divProgressCircle">
-                        <v-container>
-                            <v-progress-circular :size="50" indeterminate
-                                                 color="amber" justify="center"
-                                                 class="align-content-center">
-                            </v-progress-circular>
-                        </v-container>
-                    </div>
+<!--                    <div ref="divProgressCircle" class="progressBarCircle" v-show="divProgressCircle">-->
+<!--                        <v-container>-->
+<!--                            <v-progress-circular :size="50" indeterminate-->
+<!--                                                 color="amber" justify="center"-->
+<!--                                                 class="align-content-center">-->
+<!--                            </v-progress-circular>-->
+<!--                        </v-container>-->
+<!--                    </div>-->
+
+                    <v-overlay :value="overlay">
+                        <v-progress-circular indeterminate size="64"></v-progress-circular>
+                    </v-overlay>
 
                 </v-row>
             </v-col>
@@ -204,6 +208,7 @@
             email: '',
             password: '',
             userRole: '',
+            overlay: false,
             ecosystem: [
                 {
                     text: 'vuetify-loader',
@@ -271,7 +276,7 @@
             },
             regProcess() {
                 if (this.validated()) {
-                    this.divProgressCircle = true;
+                    this.overlay = true;
                     this.signUp();
                     this.dialogRegister = false;
                 } else {
@@ -299,10 +304,11 @@
                                                 .signInWithEmailAndPassword(this.email, this.password)
                                                 .then(
                                                     (user) => {
-                                                        this.divProgressCircle = false;
+                                                        this.overlay = false;
                                                         this.$router.replace('')
                                                     },
                                                     (err) => {
+                                                        this.overlay = false;
                                                         alert("signInWithEmailAndPassword Error" + err.message)
                                                     }
                                                 );
@@ -310,6 +316,7 @@
                                 })
                                 .catch(function (error) {
                                     console.log("setUserRole ", error);
+                                    this.overlay = false;
                                     return false;
                                 });
 
@@ -327,11 +334,13 @@
             },
             cleanSignIn() {
                 this.dialogLogin = false;
+                this.overlay = false;
                 this.email = '';
                 this.password = '';
             },
             signIn() {
                 this.dialogLogin = false;
+                this.overlay = true;
                 firebase.auth()
                     .signInWithEmailAndPassword(this.email, this.password)
                     .then(
@@ -339,7 +348,8 @@
                             this.$router.replace('')
                         },
                         (err) => {
-                            alert("Error" + err.message)
+                            this.overlay = false;
+                            alert("Ошибка\n" + err.message)
                         }
                     );
             },
