@@ -4,28 +4,13 @@
       app
       color="primary"
       dark
+      class="pa-0"
+      clipped-left
     >
-<!--      <div class="d-flex align-center">-->
-<!--        <v-img-->
-<!--          alt="Vuetify Logo"-->
-<!--          class="shrink mr-2"-->
-<!--          contain-->
-<!--          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"-->
-<!--          transition="scale-transition"-->
-<!--          width="40"-->
-<!--        />-->
 
-<!--        <v-img-->
-<!--          alt="Vuetify Name"-->
-<!--          class="shrink mt-1 hidden-sm-and-down"-->
-<!--          contain-->
-<!--          min-width="100"-->
-<!--          src="https://cdn.vuetifyjs.com/images/log os/vuetify-name-dark.png"-->
-<!--          width="100"-->
-<!--        />-->
-<!--      </div>-->
+        Эва Логистикс
 
-      <v-spacer></v-spacer>
+        <v-spacer></v-spacer>
 
       <v-btn
         @click="logout"
@@ -36,7 +21,7 @@
 
     </v-app-bar>
 
-      <v-content>
+      <v-content class="pa-0">
           <router-view></router-view>
       </v-content>
   </v-app>
@@ -47,12 +32,25 @@ import firebase from 'firebase'
 
 export default {
   name: 'App',
+    data: () => ({
+        userCompanyName: ''
+    }),
     methods: {
       logout: function () {
           firebase.auth().signOut().then(() => {
               this.$router.replace('login')
           })
-      }
+      },
+        fillUserName() {
+            switch (this.email) {
+                case 'otprav@m.ru':
+                    this.$userCompanyName = 'ООО Ева Логистикс Интернешнл Лимитед';
+                    break;
+                default:
+                    this.$userCompanyName = 'ООО Без Названия';
+            }
+            return this.$userCompanyName;
+        }
     },
 
 };

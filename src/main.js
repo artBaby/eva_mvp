@@ -33,6 +33,8 @@ firebase.auth().onAuthStateChanged(() => {
 
 )
 
+Vue.prototype.userCompanyName = ''
+
 // new Vue({
 //   router,
 //   vuetify,
