@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: '/eva_mvp/',
   "transpileDependencies": [
     "vuetify"
   ],
