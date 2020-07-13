@@ -1,5 +1,8 @@
 # eva_mvp
 
+See live:
+https://artbaby.github.io/eva_mvp/
+
 ## Project setup
 ```
 npm install
