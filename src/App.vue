@@ -4,8 +4,8 @@
       app
       color="primary"
       dark
-      class="pa-0"
       clipped-left
+      class="elevation-1"
     >
 
         Эва Логистикс

@@ -13,6 +13,7 @@
                                      absolute
                                      dark
                                      app
+                                     clipped
                 >
                     <v-list
                             dense
@@ -28,7 +29,7 @@
 
                         <v-divider></v-divider>
 
-                        <v-list-item link @click="showContainer('searchTransporter')">
+                        <v-list-item  link @click="showContainer('searchTransporter')">
                             <v-list-item-content>
                                 <v-list-item-title>Поиск перевозчика</v-list-item-title>
                             </v-list-item-content>

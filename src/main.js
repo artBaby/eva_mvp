@@ -4,6 +4,8 @@ import vuetify from './plugins/vuetify';
 import router from './router'
 // import '@/styles/main.scss';
 import firebase from "firebase";
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+
 
 Vue.config.productionTip = false
 
