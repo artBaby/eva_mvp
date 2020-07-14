@@ -5,22 +5,16 @@
 
                 <v-navigation-drawer fixed
                                      v-model="drawer"
-                                     :color="color"
-                                     :expand-on-hover="expandOnHover"
-                                     :mini-variant="miniVariant"
-                                     :right="right"
-                                     :src="bg"
-                                     absolute
                                      dark
                                      app
                                      clipped
+                                     disable-resize-watcher
                 >
                     <v-list
                             dense
                             nav
-                            class="py-0"
                     >
-                        <v-list-item two-line :class="miniVariant && 'px-0'">
+                        <v-list-item two-line :class="'px-0'">
                             <v-list-item-content>
                                 <v-list-item-title>{{fillUserName()}}</v-list-item-title>
                                 <v-list-item-subtitle>Профиль отправителя</v-list-item-subtitle>
