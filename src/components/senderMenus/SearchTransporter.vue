@@ -537,14 +537,9 @@
 
         <v-snackbar
                 v-model="snackbar"
-                :bottom="y === 'bottom'"
                 color="error"
-                :left="x === 'left'"
-                :multi-line="mode === 'multi-line'"
-                :right="x === 'right'"
                 timeout=2000
                 :top=true
-                :vertical="mode === 'vertical'"
         >
             {{ snackBarText }}
 
