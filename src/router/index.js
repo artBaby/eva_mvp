@@ -11,19 +11,19 @@ const router = new Router({
     routes: [
         {
             path: '/',
-            redirect: '/login'
+            redirect: '/eva_mvp/login'
         },
         {
             path: '*',
-            redirect: '/login'
+            redirect: '/eva_mvp/login'
         },
         {
-            path: '/login',
+            path: '/eva_mvp/login',
             name: 'Login',
             component: LoginPage
         },
         {
-            path: '/productCompany',
+            path: '/eva_mvp/productCompany',
             name: 'ProductCompany',
             component: ProductCompany,
             meta: {
@@ -31,7 +31,7 @@ const router = new Router({
             }
         },
         {
-            path: '/trailerCompany',
+            path: '/eva_mvp/trailerCompany',
             name: 'TrailerCompany',
             component: TrailerCompany,
             meta: {
@@ -93,14 +93,14 @@ router.beforeEach((to, from, next) => {
                                 }) {
                     console.log("LoginPage")
                     if (claims.productCompany || LoginPage.data().userRole === 'productCompany')  {
-                        if (to.path !== '/productCompany')
+                        if (to.path !== '/eva_mvp/productCompany')
                             return next({
-                                path: '/productCompany',
+                                path: '/eva_mvp/productCompany',
                             })
                     } else if (claims.trailerCompany) {
-                        if (to.path !== '/trailerCompany')
+                        if (to.path !== '/eva_mvp/trailerCompany')
                             return next({
-                                path: '/trailerCompany',
+                                path: '/eva_mvp/trailerCompany',
                             })
                     }
 
