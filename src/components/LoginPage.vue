@@ -1,191 +1,211 @@
 <template>
     <v-container>
-        <v-row class="text-center">
-            <v-col cols="12" style="margin-top: 50px">
-                <v-img :src="require('../assets/logo_car.png')"
-                       contain
-                       height="160"
-                />
-            </v-col>
+        <v-form ref="form">
+            <v-row class="text-center">
+                <v-col cols="12" style="margin-top: 50px">
+                    <v-img :src="require('../assets/logo_car.png')"
+                           contain
+                           height="160"
+                    />
+                </v-col>
 
-            <v-col class="mb-4">
-                <h1 class="display-2 font-weight-bold mb-3">
-                    Добро пожаловать
-                </h1>
-            </v-col>
-
-
-            <v-col class="mb-5" cols="12">
-                <v-row justify="center">
-
-                    <!-- Вход -->
-
-                    <v-dialog v-model="dialogLogin" persistent max-width="600px">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn class="ma-1 info"
-                                   color="primary"
-                                   v-bind="attrs"
-                                   v-on="on">
-                                Вход
-                            </v-btn>
-                        </template>
-                        <v-card>
-                            <v-card-title>
-                                <span class="headline">Вход в систему</span>
-                            </v-card-title>
-                            <v-card-text>
-                                <v-container>
-                                    <v-row>
-                                        <v-col cols="12">
-                                            <v-text-field label="Логин" v-model="email" required></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-text-field label="Пароль" v-model="password" type="password"
-                                                          required></v-text-field>
-                                        </v-col>
-                                    </v-row>
-                                </v-container>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" text @click="cleanSignIn">Отмена</v-btn>
-                                <v-btn color="blue darken-1" text @click="signIn">Войти</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
+                <v-col class="mb-4">
+                    <h1 class="display-2 font-weight-bold mb-3">
+                        Добро пожаловать
+                    </h1>
+                </v-col>
 
 
-                    <!-- Регистрация -->
+                <v-col class="mb-5" cols="12">
+                    <v-row justify="center">
 
-                    <v-dialog v-model="dialogRegister" persistent max-width="600px">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn class="ma-1"
-                                   v-bind="attrs"
-                                   v-on="on">
-                                Регистрация
-                            </v-btn>
-                        </template>
-                        <v-card>
-                            <v-card-title>
-                                <span class="headline">Новый пользователь</span>
-                            </v-card-title>
-                            <v-card-text>
-                                <v-container class="inputs-container">
-                                    <v-row>
-                                        <v-col>
-                                            <v-btn class="ma-1"
-                                                   @click="setUserRoleProperty('productCompany')">
-                                                Грузовладелец
-                                            </v-btn>
-                                        </v-col>
-                                        <v-col>
-                                            <v-btn class="ma-1"
-                                                   v-bind="attrs"
-                                                   v-on="on"
-                                                   @click="setUserRoleProperty('trailerCompany')">
-                                                Грузоперевозчик
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col cols="12">
-                                            <v-text-field label="Логин*" v-model="email" required></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-text-field label="Пароль*" v-model="password" type="password"
-                                                          required></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-text-field label="Повторите пароль*" type="password"
-                                                          required></v-text-field>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col cols="12">
-                                            <v-text-field label="Страна*" required></v-text-field>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col cols="12">
-                                            <v-text-field
-                                                    label="ИНН*"
-                                                    persistent-hint
-                                                    required
-                                                    v-on:blur="fillCompanyName()"
-                                            ></v-text-field>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col cols="12">
-                                            <v-text-field
-                                                    label="Полное наименование организации"
-                                                    v-model="companyName"
-                                                    persistent-hint
-                                                    disabled
-                                            ></v-text-field>
-                                            <v-progress-linear :indeterminate="true" v-show="isLoading"
-                                                               ref="company_progress_bar">
-                                            </v-progress-linear>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col>
-                                            <v-file-input accept=".doc,.docx,.pdf"
-                                                          label="Учредительные документы (.doc, .docx, .pdf)"
-                                            ></v-file-input>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col cols="1">
-                                            <v-text-field
-                                                    value="+7"
-                                                    disabled></v-text-field>
-                                        </v-col>
-                                        <v-col cols="11">
-                                            <v-text-field
-                                                    label="Номер телефона (Формат: 1234567890)"
-                                                    v-model="phoneNumber"
-                                                    type="number">
-                                            </v-text-field>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col>
-                                            <v-checkbox label="Пользовательское соглашение"></v-checkbox>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col>
-                                            <v-checkbox label="Политика конфиденциальности"></v-checkbox>
-                                        </v-col>
-                                    </v-row>
-                                </v-container>
-                                <small>*Обязательные поля</small>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" text @click="cleanRegister()">Отмена</v-btn>
-                                <v-btn color="blue darken-1" text @click="regProcess">Отправить</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
+                        <!-- Вход -->
 
-<!--                    <div ref="divProgressCircle" class="progressBarCircle" v-show="divProgressCircle">-->
-<!--                        <v-container>-->
-<!--                            <v-progress-circular :size="50" indeterminate-->
-<!--                                                 color="amber" justify="center"-->
-<!--                                                 class="align-content-center">-->
-<!--                            </v-progress-circular>-->
-<!--                        </v-container>-->
-<!--                    </div>-->
+                        <v-dialog v-model="dialogLogin" persistent max-width="600px">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn class="ma-1 info"
+                                       color="primary"
+                                       v-bind="attrs"
+                                       v-on="on">
+                                    Вход
+                                </v-btn>
+                            </template>
+                            <v-card>
+                                <v-card-title>
+                                    <span class="headline">Вход в систему</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-container>
+                                        <v-row>
+                                            <v-col cols="12">
+                                                <v-text-field label="Почта" v-model="email" required></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12">
+                                                <v-text-field label="Пароль" v-model="password" type="password"
+                                                              required></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" text @click="cleanSignIn">Отмена</v-btn>
+                                    <v-btn color="blue darken-1" text @click="signIn">Войти</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
 
-                    <v-overlay :value="overlay">
-                        <v-progress-circular indeterminate size="64"></v-progress-circular>
-                    </v-overlay>
 
-                </v-row>
-            </v-col>
-        </v-row>
+                        <!-- Регистрация -->
+
+                        <v-dialog v-model="dialogRegister" persistent max-width="600px">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn class="ma-1"
+                                       v-bind="attrs"
+                                       v-on="on">
+                                    Регистрация
+                                </v-btn>
+                            </template>
+                            <v-card>
+                                <v-card-title>
+                                    <span class="headline">Новый пользователь</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-container >
+                                        <v-row>
+                                            <v-col>
+                                                <v-btn
+                                                       @click="setUserRoleProperty('productCompany')">
+                                                    Грузовладелец
+                                                </v-btn>
+                                            </v-col>
+                                            <v-col>
+                                                <v-btn
+                                                       v-bind="attrs"
+                                                       v-on="on"
+                                                       @click="setUserRoleProperty('trailerCompany')">
+                                                    Грузоперевозчик
+                                                </v-btn>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row no-gutters>
+                                            <v-col cols="12">
+                                                <v-text-field label="Почта*" v-model="email" required tile
+                                                              :rules="[rules.required, rules.email]"
+                                                ></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row no-gutters>
+                                            <v-col cols="12">
+                                                <v-text-field label="Пароль*" v-model="password" type="password" tile
+                                                              required></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row no-gutters>
+                                            <v-col cols="12">
+                                                <v-text-field label="Повторите пароль*" type="password"
+                                                              required></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row no-gutters>
+                                            <v-col cols="12">
+                                                <v-text-field label="Страна*" required></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row no-gutters>
+                                            <v-col cols="12">
+                                                <v-text-field
+                                                        label="ИНН*"
+                                                        persistent-hint
+                                                        required
+                                                        v-on:blur="fillCompanyName()"
+                                                ></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row no-gutters>
+                                            <v-col cols="12">
+                                                <v-text-field
+                                                        label="Полное наименование организации"
+                                                        v-model="companyName"
+                                                        persistent-hint
+                                                        disabled
+                                                ></v-text-field>
+                                                <v-progress-linear :indeterminate="true" v-show="isLoading"
+                                                                   ref="company_progress_bar">
+                                                </v-progress-linear>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row no-gutters>
+                                            <v-col>
+                                                <v-file-input accept=".doc,.docx,.pdf"
+                                                              label="Учредительные документы (.doc, .docx, .pdf)"
+                                                ></v-file-input>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row no-gutters>
+                                            <v-col cols="1">
+                                                <v-text-field
+                                                        value="+7"
+                                                        disabled></v-text-field>
+                                            </v-col>
+                                            <v-col cols="11">
+                                                <v-text-field
+                                                        label="Номер телефона (Формат: 1234567890)"
+                                                        v-model="phoneNumber"
+                                                        type="number">
+                                                </v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row no-gutters>
+                                            <v-col>
+                                                <v-checkbox label="Пользовательское соглашение"></v-checkbox>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row no-gutters>
+                                            <v-col>
+                                                <v-checkbox label="Политика конфиденциальности"></v-checkbox>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                    <small>*Обязательные поля</small>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" text @click="cleanRegister()">Отмена</v-btn>
+                                    <v-btn color="blue darken-1" text @click="regProcess">Отправить</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+
+                        <v-overlay :value="overlay">
+                            <v-progress-circular indeterminate size="64"></v-progress-circular>
+                        </v-overlay>
+
+                    </v-row>
+                </v-col>
+            </v-row>
+        </v-form>
+
+        <v-snackbar
+                v-model="snackbar"
+                color="error"
+                timeout=4000
+                :top=true
+        >
+            {{ snackBarText }}
+
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                        dark
+                        text
+                        v-bind="attrs"
+                        @click="snackbar = false"
+                >
+                    Закрыть
+                </v-btn>
+            </template>
+        </v-snackbar>
+
     </v-container>
 </template>
 
@@ -208,17 +228,35 @@
             password: '',
             userRole: '',
             overlay: false,
+            snackBarText: "",
+            snackbar: false,
+            rules: {
+                required: value => !!value || 'Обязательное поле.',
+                email: value => {
+                    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                    return pattern.test(value) || 'Введите корректный адрес почты.'
+                },
+            }
         }),
         methods: {
             fillCompanyName() {
                 this.isLoading = true;
+                this.companyName= ""
                 setTimeout(() => {
                     this.isLoading = false
                     this.companyName = "ООО Ева Логистикс Интернешнл Лимитед";
                 }, 1500)
             },
+            showSnackBar(message) {
+                this.snackBarText = message;
+                this.snackbar = true;
+            },
             validated() {
                 if (this.userRole === '') {
+                    this.showSnackBar("Выберите тип пользователя")
+                    return false;
+                } else if (!this.$refs.form.validate()) {
+                    this.showSnackBar("Проверьте обязательные поля")
                     return false;
                 }
                 return true;
@@ -228,8 +266,6 @@
                     this.overlay = true;
                     this.signUp();
                     this.dialogRegister = false;
-                } else {
-                    alert("Выберите тип пользователя")
                 }
             },
             signUp() {
@@ -258,7 +294,8 @@
                                                     },
                                                     (err) => {
                                                         this.overlay = false;
-                                                        alert("signInWithEmailAndPassword Error" + err.message)
+                                                        this.showSnackBar("Ошибка авторизации пользователя: \n" +
+                                                            err.message)
                                                     }
                                                 );
                                         });
@@ -271,7 +308,8 @@
 
                         },
                         (err) => {
-                            alert("createUserWithEmailAndPassword Error" + err.message)
+                            this.showSnackBar("Ошибка создания нового пользователя:\n" +
+                                +err.message)
                         }
                     );
                 // this.cleanRegister();
@@ -298,7 +336,8 @@
                         },
                         (err) => {
                             this.overlay = false;
-                            alert("Ошибка\n" + err.message)
+                            this.showSnackBar("Ошибка авторизации пользователя: \n" +
+                                err.message)
                         }
                     );
             },
