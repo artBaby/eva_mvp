@@ -1,15 +1,16 @@
 <template>
-    <div>
+    <v-container>
+        <div>
         Проверка груза
-    </div>
+        <trans-map/>
+        </div>
+    </v-container>
 </template>
 
 <script>
+    import transMap from './modules/TransMap.vue'
     export default {
-        name: "CheckGruz"
+        name: "CheckGruz",
+        components: {transMap: transMap},
     }
 </script>
-
-<style scoped>
-
-</style>
