@@ -23,62 +23,62 @@
 
                         <v-divider></v-divider>
 
-                        <v-list-item  link @click="showContainer('searchTransporter')">
-                            <v-list-item-content>
-                                <v-list-item-title>Поиск перевозчика</v-list-item-title>
+                        <v-list-item :class='containerList.searchTransporter && usedTheme' link @click="showContainer('searchTransporter')">
+                            <v-list-item-content >
+                                <v-list-item-title >Поиск перевозчика</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
 
-                        <v-list-item link @click="showContainer('checkGruz')">
+                        <v-list-item :class='containerList.checkGruz && usedTheme' link @click="showContainer('checkGruz')">
                             <v-list-item-content>
                                 <v-list-item-title>Отслеживание груза</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
 
 
-                        <v-list-item link @click="showContainer('chat')">
+                        <v-list-item :class='containerList.chat && usedTheme' link @click="showContainer('chat')">
                             <v-list-item-content>
                                 <v-list-item-title>Чат</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
 
-                        <v-list-item link @click="showContainer('insurance')">
+                        <v-list-item :class='containerList.insurance && usedTheme' link @click="showContainer('insurance')">
                             <v-list-item-content>
                                 <v-list-item-title>Страхование груза</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
 
-                        <v-list-item link @click="showContainer('sklad')">
+                        <v-list-item :class='containerList.sklad && usedTheme' link @click="showContainer('sklad')">
                             <v-list-item-content>
                                 <v-list-item-title>Складские комплексы и РЦ</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
 
-                        <v-list-item link @click="showContainer('chop')">
+                        <v-list-item :class='containerList.chop && usedTheme' link @click="showContainer('chop')">
                             <v-list-item-content>
                                 <v-list-item-title>ЧОП</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
 
-                        <v-list-item link @click="showContainer('searchCustomsBroker')">
+                        <v-list-item :class='containerList.searchCustomsBroker && usedTheme' link @click="showContainer('searchCustomsBroker')">
                             <v-list-item-content>
                                 <v-list-item-title>Поиск таможенного брокера</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
 
-                        <v-list-item link @click="showContainer('payFracht')">
+                        <v-list-item :class='containerList.payFracht && usedTheme' link @click="showContainer('payFracht')">
                             <v-list-item-content>
                                 <v-list-item-title>Оплата фрахта</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
 
-                        <v-list-item link @click="showContainer('archive')">
+                        <v-list-item :class='containerList.archive && usedTheme' link @click="showContainer('archive')">
                             <v-list-item-content>
                                 <v-list-item-title>Архив сделок</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
 
-                        <v-list-item link @click="showContainer('settings')">
+                        <v-list-item :class='containerList.settings && usedTheme' link @click="showContainer('settings')">
                             <v-list-item-content>
                                 <v-list-item-title>Настройки</v-list-item-title>
                             </v-list-item-content>
@@ -153,7 +153,8 @@
                 payFracht: false,
                 archive: false,
                 settings: false
-            }
+            },
+            usedTheme: "deep-orange",
         }),
         methods: {
             fillUserName() {
