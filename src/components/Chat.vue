@@ -1,183 +1,183 @@
 <template>
-    <v-container>
+    <div class="chat-container-eva">
 
-        <chat-window :currentUserId="currentUserId"
-                     :rooms="rooms"
-                     :messages="messages"
-                     :messagesLoaded="messagesLoaded"
-                     :roomId=1
-                     :textMessages="this.textMessages"
-                     @fetchMessages="fetchMessages"
+        <div class="button-theme" v-if="debugChat">
+            <button @click="theme = 'light'" class="button-light">Light</button>
+            <button @click="theme = 'dark'" class="button-dark">Dark</button>
+            <button @click="addData()" class="button-dark">Add data</button>
+            <button @click="resetData()" class="button-dark">Reset data</button>
+        </div>
 
+        <chat-container
+                :currentUserId="currentUserId"
+                :theme="theme"
+                v-if="showChat"
         />
-    </v-container>
 
+
+    </div>
 </template>
 
 <script>
-    import ChatWindow from 'vue-advanced-chat'
-    import 'vue-advanced-chat/dist/vue-advanced-chat.css'
+    import {roomsRef, usersRef} from '@/main'
+    import ChatContainer from "@/components/common/ChatContainer";
 
     export default {
         components: {
-            ChatWindow
+            ChatContainer
         },
+
         data() {
             return {
-                messagesLoaded: false,
-                rooms: [
+                theme: 'light',
+                showChat: true,
+                debugChat: false,
+                users: [
                     {
-                        roomId: 1,
-                        roomName: 'ООО Прогресс ТК',
-                        lastMessage: {
-                            content: 'Поняли, спасибо',
-                            sender_id: 1234,
-                            username: 'John Doe',
-                            timestamp: '10:20',
-                            date: 123242424,
-                            seen: true,
-                            new: true
-                        },
-                        users: [
-                            {
-                                _id: 1234,
-                                username: 'John Doe',
-                                status: {
-                                    state: 'online',
-                                    last_changed: 'today, 14:30'
-                                }
-                            },
-                            {
-                                _id: 4321,
-                                username: 'John Snow',
-                                status: {
-                                    state: 'offline',
-                                    last_changed: '14 July, 20:00'
-                                }
-                            }
-                        ],
-                        typingUsers: [1234]
+                        _id: '0',
+                        username: 'Вы',
+                        avatar:
+                            'https://vignette.wikia.nocookie.net/teamavatarone/images/4/45/Yoda.jpg/revision/latest?cb=20130224160049'
                     },
-
                     {
-                        roomId: 2,
-                        roomName: 'FastLines TK',
-                        lastMessage: {
-                            content: 'ждем',
-                            sender_id: 1234,
-                            username: 'John Doe',
-                            timestamp: '9:44',
-                            date: 123242424,
-                            seen: true,
-                            new: true
-                        },
-                        users: [
-                            {
-                                _id: 1234,
-                                username: 'John Doe',
-                                status: {
-                                    state: 'online',
-                                    last_changed: 'today, 14:30'
-                                }
-                            },
-                            {
-                                _id: 4321,
-                                username: 'John Snow',
-                                status: {
-                                    state: 'offline',
-                                    last_changed: '14 July, 20:00'
-                                }
-                            }
-                        ]
+                        _id: '1',
+                        username: 'Прогресс ТК',
+                        avatar: 'https://66.media.tumblr.com/avatar_c6a8eae4303e_512.pnj'
+                    },
+                    {
+                        _id: '2',
+                        username: 'FastTrans TK',
+                        avatar: 'https://avatarfiles.alphacoders.com/184/thumb-184913.jpg'
                     }
 
                 ],
-                messages: [
-                    {
-                        _id: 1,
-                        content: 'Подскажите, фура уже выехала?',
-                        sender_id: 1234,
-                        username: 'John Doe',
-                        date: '13 November',
-                        timestamp: '10:20',
-                        seen: true,
-                        disable_actions: false,
-                        disable_reactions: true,
-                        // file: {
-                        //     name: 'My File',
-                        //     size: 67351,
-                        //     type: 'png',
-                        //     url: 'https://firebasestorage.googleapis.com/...'
-                        // },
-                        // reactions: {
-                        //     wink: [
-                        //         1234, // USER_ID
-                        //         4321
-                        //     ],
-                        //     laughing: [
-                        //         1234
-                        //     ]
-                        // }
-                    },
-                    {
-                        _id: 2,
-                        content: 'Да, уже в пути!',
-                        sender_id: 4321,
-                        username: 'John Doe',
-                        date: '13 November',
-                        timestamp: '10:20',
-                        seen: true,
-                        disable_actions: false,
-                        disable_reactions: true,
-                    },
-                    {
-                        _id: 3,
-                        content: 'Узнать местоположение машины вы можете в разделе "Отслеживание груза"',
-                        sender_id: 4321,
-                        username: 'John Doe',
-                        date: '13 November',
-                        timestamp: '10:21',
-                        seen: true,
-                        disable_actions: false,
-                        disable_reactions: true,
-                    },
-                    {
-                        _id: 4,
-                        content: 'Поняли, спасибо',
-                        sender_id: 1234,
-                        username: 'John Doe',
-                        date: '13 November',
-                        timestamp: '10:21',
-                        seen: true,
-                        disable_actions: false,
-                        disable_reactions: true,
-                    }
-                ],
-                currentUserId: 1234,
-
-                textMessages: {
-                    NEW_MESSAGES: 'Новые сообщения',
-                    MESSAGE_DELETED: 'Ce message a été supprimé',
-                    MESSAGES_EMPTY: 'Aucun message',
-                    CONVERSATION_STARTED: 'Диалог начат:',
-                    TYPE_MESSAGE: 'Введите сообщение',
-                    SEARCH: 'Поиск'
-                },
-
+                currentUserId: '0',
+                updatingData: false
             }
         },
-        methods: {
-            fetchMessages({room, options = {}}) {
-                // this.showMessages = false;
 
-                return (this.messagesLoaded = true)
+        watch: {
+            currentUserId() {
+                this.showChat = false
+                setTimeout(() => (this.showChat = true), 150)
+            }
+        },
+
+        methods: {
+            resetData() {
+                roomsRef.get().then(val => {
+                    val.forEach(async val => {
+                        const ref = roomsRef.doc(val.id).collection('messages')
+
+                        await ref.get().then(res => {
+                            if (res.empty) return
+                            res.docs.map(doc => ref.doc(doc.id).delete())
+                        })
+
+                        await roomsRef.doc(val.id).delete()
+                    })
+                })
+
+                usersRef.get().then(val => {
+                    val.forEach(val => {
+                        usersRef.doc(val.id).delete()
+                    })
+                })
+            },
+            async addData() {
+                this.updatingData = true
+
+                const user0 = this.users[0]
+                await usersRef.doc(user0._id).set(user0)
+
+                const user1 = this.users[1]
+                await usersRef.doc(user1._id).set(user1)
+
+                const user2 = this.users[2]
+                await usersRef.doc(user2._id).set(user2)
+
+                await roomsRef.add({users: [user0._id, user1._id]})
+                await roomsRef.add({users: [user0._id, user2._id]})
+                // await roomsRef.add({users: [user2._id, user3._id]})
+                // await roomsRef.add({users: [user1._id, user2._id, user3._id]})
+
+                this.updatingData = false
             }
         }
-
-
     }
 </script>
 
-<style scoped>
+<style lang="scss">
+    body {
+        background: #fafafa;
+    }
 
+    .chat-container-eva {
+        font-family: 'Quicksand', sans-serif;
+
+        @media only screen and (max-width: 768px) {
+            padding: 0;
+        }
+    }
+
+    select {
+        height: 20px;
+        outline: none;
+        border: 1px solid #e0e2e4;
+        background: #fff;
+    }
+
+    .user-logged {
+        font-size: 12px;
+        margin-right: 5px;
+    }
+
+    .button-theme {
+        float: right;
+
+        .button-light {
+            background: #fff;
+            border: 1px solid #46484e;
+            color: #46484e;
+        }
+
+        .button-dark {
+            background: #1c1d21;
+            border: 1px solid #1c1d21;
+        }
+
+        button {
+            color: #fff;
+            outline: none;
+            cursor: pointer;
+            border-radius: 4px;
+            padding: 0 12px;
+            margin-left: 10px;
+            margin-bottom: 25px;
+            border: none;
+            font-size: 12px;
+            transition: 0.3s;
+            vertical-align: top;
+
+            &:hover {
+                opacity: 0.8;
+            }
+
+            &:active {
+                opacity: 0.6;
+            }
+
+            @media only screen and (max-width: 768px) {
+                padding: 3px 6px;
+                font-size: 13px;
+            }
+        }
+    }
+
+    .version-container {
+        padding-top: 20px;
+        text-align: right;
+        font-size: 14px;
+        color: grey;
+    }
 </style>
