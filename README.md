@@ -1,6 +1,7 @@
 # eva_mvp
+Live CI
 
-<a target="_blank" rel="noopener noreferrer" href="https://artbaby.github.io/eva_mvp/">Live CI</a>
+https://artbaby.github.io/eva_mvp/
 
 ## Project setup
 ```
