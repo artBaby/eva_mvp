@@ -31,7 +31,7 @@
             return {
                 theme: 'light',
                 showChat: true,
-                debugChat: false,
+                debugChat: true,
                 users: [
                     {
                         _id: '0',
