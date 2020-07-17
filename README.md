@@ -1,6 +1,6 @@
 # eva_mvp
+Live CI
 
-See live:
 https://artbaby.github.io/eva_mvp/
 
 ## Project setup
