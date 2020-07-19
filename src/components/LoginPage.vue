@@ -71,22 +71,35 @@
                                     <span class="headline">Новый пользователь</span>
                                 </v-card-title>
                                 <v-card-text>
-                                    <v-container >
-                                        <v-row>
-                                            <v-col>
-                                                <v-btn
-                                                       @click="setUserRoleProperty('productCompany')">
-                                                    Грузовладелец
-                                                </v-btn>
-                                            </v-col>
-                                            <v-col>
-                                                <v-btn
-                                                       v-bind="attrs"
-                                                       v-on="on"
-                                                       @click="setUserRoleProperty('trailerCompany')">
-                                                    Грузоперевозчик
-                                                </v-btn>
-                                            </v-col>
+                                    <v-container>
+                                        <v-row align="center"
+                                               justify="center"
+                                        >
+                                            <v-btn-toggle
+                                                    dense
+                                                    group
+                                                    rounded
+                                                    v-model="userRole"
+                                            >
+                                                <v-col cols="6">
+                                                    <div>
+                                                        <v-btn
+                                                                value="productCompany"
+                                                                :color="userRole === 'productCompany' ? 'light-blue accent-2' : 'light-blue lighten-5'"
+                                                        >
+                                                            Грузовладелец
+                                                        </v-btn>
+                                                    </div>
+                                                </v-col>
+                                                <v-col cols="6">
+                                                    <v-btn value="trailerCompany"
+                                                           :color="userRole === 'trailerCompany' ? 'light-blue accent-2' : 'light-blue lighten-5'"
+                                                    >
+                                                        Грузоперевозчик
+                                                    </v-btn>
+                                                </v-col>
+                                            </v-btn-toggle>
+
                                         </v-row>
                                         <v-row no-gutters>
                                             <v-col cols="12">
@@ -236,12 +249,13 @@
                     const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                     return pattern.test(value) || 'Введите корректный адрес почты.'
                 },
-            }
+            },
+            userRoleToggle: ''
         }),
         methods: {
             fillCompanyName() {
                 this.isLoading = true;
-                this.companyName= ""
+                this.companyName = ""
                 setTimeout(() => {
                     this.isLoading = false
                     this.companyName = "ООО Ева Логистикс Интернешнл Лимитед";
@@ -252,7 +266,8 @@
                 this.snackbar = true;
             },
             validated() {
-                if (this.userRole === '') {
+                if (this.userRole === '' || typeof (this.userRole) === 'undefined') {
+
                     this.showSnackBar("Выберите тип пользователя")
                     return false;
                 } else if (!this.$refs.form.validate()) {
@@ -341,10 +356,6 @@
                         }
                     );
             },
-            setUserRoleProperty(role) {
-                this.userRole = role
-            }
-            ,
             setRole(uid) {
                 var addMessage = firebase.functions().httpsCallable("setUserRole");
 

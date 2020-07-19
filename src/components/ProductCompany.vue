@@ -169,7 +169,7 @@
             email: '',
             show_search: false,
             containerList: {
-                searchTransporter: false,
+                searchTransporter: true,
                 checkGruz: false,
                 chat: false,
                 insurance: false,
@@ -177,7 +177,7 @@
                 chop: false,
                 searchCustomsBroker: false,
                 payFracht: false,
-                archive: true,
+                archive: false,
                 settings: false
             },
             usedTheme: "deep-orange",
