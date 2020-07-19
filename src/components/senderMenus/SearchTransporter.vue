@@ -1,6 +1,6 @@
 <template>
-    <v-container>
-        <h1 class="font-weight-light">Поиск Перевозчика</h1>
+    <div>
+        <h1 class="font-weight-light" style="margin-bottom: 3vh;">Поиск Перевозчика</h1>
 
         <v-stepper v-model="step">
             <v-stepper-header>
@@ -555,7 +555,7 @@
             </template>
         </v-snackbar>
 
-    </v-container>
+    </div>
 </template>
 
 <script>
