@@ -1,20 +1,23 @@
 <template>
-    <div class="chat-container-eva">
+    <div>
+        <h1 class="font-weight-light">Чаты с участниками</h1>
 
-        <div class="button-theme" v-if="debugChat">
-            <button @click="theme = 'light'" class="button-light">Light</button>
-            <button @click="theme = 'dark'" class="button-dark">Dark</button>
-            <button @click="addData()" class="button-dark">Add data</button>
-            <button @click="resetData()" class="button-dark">Reset data</button>
+        <div class="chat-container-eva">
+
+            <div class="button-theme" v-if="debugChat">
+                <button @click="theme = 'light'" class="button-light">Light</button>
+                <button @click="theme = 'dark'" class="button-dark">Dark</button>
+                <button @click="addData()" class="button-dark">Add data</button>
+                <button @click="resetData()" class="button-dark">Reset data</button>
+            </div>
+
+            <chat-container
+                    :currentUserId="currentUserId"
+                    :theme="theme"
+                    v-if="showChat"
+            />
+
         </div>
-
-        <chat-container
-                :currentUserId="currentUserId"
-                :theme="theme"
-                v-if="showChat"
-        />
-
-
     </div>
 </template>
 
