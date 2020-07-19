@@ -1,6 +1,6 @@
 <template>
     <div>
-        Настройки
+        <h1 class="font-weight-light" style="margin-bottom: 3vh;">Настройки</h1>
     </div>
 </template>
 
