@@ -12,6 +12,7 @@
                         label="Поиск"
                         single-line
                         hide-details
+                        clearable
                 ></v-text-field>
             </v-card-title>
             <v-data-table
@@ -52,9 +53,9 @@
                         // sortable: false,
                         value: 'name',
                     },
-                    { text: 'Лицензия', value: 'license' },
-                    { text: 'Статус', value: 'status' },
                     { text: 'Рейтинг', value: 'rating' },
+                    { text: 'Лицензия №', value: 'license' },
+                    { text: 'Статус', value: 'status' },
                 ],
                 companies: [
                     {
